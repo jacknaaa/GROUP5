@@ -412,3 +412,5 @@ csv/
 #HTML
 html/
 *.html
+
+*.ipynb
