@@ -1,0 +1,69 @@
+```{r}
+library(tidyverse)
+```
+
+#import the dataset
+```{r}
+mk_pro <- read_csv("C:/Users/pete_/OneDrive/Desktop/R/data.csv")
+```
+
+#clean data
+```{r}
+mk_rdup <- mk_pro %>% distinct(recency, history, used_discount, used_bogo, zip_code, is_referral, channel, offer, conversion)
+```
+
+#filter & count offer
+```{r}
+mk_offer_conversion <- mk_rdup %>% 
+  filter(conversion == 1) %>% 
+  count(offer) 
+```
+
+#plot offer
+```{r}
+ggplot(mk_offer_conversion, aes(n, offer)) +
+  geom_histogram(stat = "identity", fill = "green")
+```
+
+#plot channel
+```{r}
+mk_channel_conversion <- mk_rdup %>% 
+  filter(conversion == 1) %>% 
+  count(channel) 
+ggplot(mk_channel_conversion, aes(n, channel)) +
+  geom_histogram(stat = "identity", fill = "blue")
+```
+#add channel percent
+```{r}
+mk_channel_conversion$percent <- c(12, 44, 44)
+```
+
+#calculate & plot channel rate
+```{r}
+mk_cha_rate <-  mk_channel_conversion %>% 
+  mutate(rate = n / percent)
+ggplot(mk_cha_rate, aes(rate, channel)) +
+  geom_histogram(stat = "identity", fill = "lightblue")
+```
+
+#plot zip code
+```{r}
+mk_zip_conversion <- mk_rdup %>% 
+  filter(conversion == 1) %>% 
+  count(zip_code) 
+ggplot(mk_zip_conversion, aes(n, zip_code)) +
+  geom_histogram(stat = "identity", fill = "gray") 
+```
+#add zip code percent
+```{r}
+mk_zip_conversion$percent <- c(15, 45, 40)
+```
+
+#calculate & plot zip code rate
+```{r}
+mk_zip_rate <- mk_zip_conversion %>% 
+  mutate(rate = n / percent)  
+  ggplot(mk_zip_rate, aes(rate, zip_code)) +
+  geom_histogram(stat = "identity", fill = "black")
+```
+
